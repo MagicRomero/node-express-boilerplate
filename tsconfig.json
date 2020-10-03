@@ -1,17 +1,14 @@
 {
   "compilerOptions": {
     "baseUrl": "./src",
-    "paths": {
-      "@/loaders/*": ["loaders/*"],
-      "@/models/*": ["models/*"],
-      "@/services/*": ["services/*"],
-      "@/types/*": ["types/*"],
-      "@/config/*": ["config/*"]
-    },
-    "target": "es6",
-    "module": "es6",
+    "typeRoots": ["./node_modules/@types", "./src/types"],
+    "target": "es2017",
+    "lib": ["es2017", "esnext.asynciterable"],
     "moduleResolution": "node",
     "declaration": false,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "emitDecoratorMetadata": true,
     "noImplicitAny": false,
     "sourceMap": true,
     "noLib": false,
@@ -26,6 +23,6 @@
     "isolatedModules": false
   },
   "include": ["./src/**/*"],
-  "exclude": ["node_modules"],
+  "exclude": ["node_modules", "tests"],
   "outDir": "./dist"
 }

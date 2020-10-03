@@ -1,13 +1,21 @@
 {
   "name": "express-2020",
-  "version": "1.0.0",
-  "description": "",
+  "version": "0.2.5",
+  "description": "The only express boilerplate you need for build better servers",
   "main": "dist/app.js",
   "scripts": {
-    "compile": "tsc --project ./",
-    "dev": "nodemon --exec babel-node --extensions \".ts\" src/app.ts"
+    "dev": "nodemon",
+    "inspect": "nodemon --inspect"
   },
-  "keywords": [],
+  "keywords": [
+    "express",
+    "boilerplate",
+    "generator",
+    "express-typescript",
+    "esnext",
+    "node",
+    "node-express"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/MagicRomero/node-express-boilerplate.git"
@@ -15,8 +23,8 @@
   "bugs": {
     "url": "https://github.com/MagicRomero/node-express-boilerplate.git/issues"
   },
-  "author": "",
-  "license": "MIT",
+  "author": "Magic romero",
+  "license": "ISC",
   "devDependencies": {
     "@babel/cli": "^7.11.6",
     "@babel/core": "^7.11.6",
@@ -33,7 +41,9 @@
     "typescript": "^4.0.3"
   },
   "dependencies": {
+    "cors": "^2.8.5",
     "dotenv": "^8.2.0",
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "helmet": "^4.1.1"
   }
 }

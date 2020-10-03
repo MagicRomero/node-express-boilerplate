@@ -1,17 +1,13 @@
-const express = require("express");
-const config = require("./config");
+import express, { Application } from "express";
+import config from "./config";
+import loaders from "./loaders";
 
 async function startServer() {
-  const app = express();
+  const app: Application = express();
 
-  app.use(express.json());
+  await loaders({ app });
 
-  app.listen(config.port, (err) => {
-    if (err) {
-      console.log("An error happened ", err);
-      return;
-    }
-
+  app.listen(config.port, () => {
     console.log(`Server listening on port ${config.port}`);
   });
 
