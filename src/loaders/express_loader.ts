@@ -2,6 +2,7 @@ import express, { Application, NextFunction, Request, Response } from "express";
 import helmet from "helmet";
 import compression from "compression";
 import routes from "../api";
+import { loggerMiddleware } from "../api/ middlewares";
 
 export default async ({ app }: { app: Application }) => {
   app.enable("trust proxy");
@@ -20,6 +21,8 @@ export default async ({ app }: { app: Application }) => {
       },
     })
   );
+
+  app.use(loggerMiddleware);
 
   app.use("/api/v1", routes());
 
