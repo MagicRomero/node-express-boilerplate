@@ -5,12 +5,12 @@
     "target": "es2017",
     "lib": ["es2017", "esnext.asynciterable"],
     "moduleResolution": "node",
+    "module": "ES6",
     "declaration": false,
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
     "emitDecoratorMetadata": true,
     "noImplicitAny": false,
-    "sourceMap": true,
     "noLib": false,
     "allowJs": true,
     "suppressImplicitAnyIndexErrors": true,
@@ -24,5 +24,6 @@
   },
   "include": ["./src/**/*"],
   "exclude": ["node_modules", "tests"],
-  "outDir": "./dist"
+  "outDir": "./dist",
+  "sourceMap": true
 }
