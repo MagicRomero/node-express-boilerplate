@@ -8,7 +8,7 @@ const startServer = async () => {
   await loaders(app);
 
   app.listen(config.port, () => {
-    console.log(`Server listening on port ${config.port}`);
+    console.log(`🎉 🎉  Server listening on port ${config.port} 🎉 🎉 `);
   });
 };
 
