@@ -1,13 +1,21 @@
 import express, { Application, NextFunction, Request, Response } from "express";
+import cors from "cors";
 import helmet from "helmet";
 import compression from "compression";
+import hpp from "hpp";
+import rateLimit from "express-rate-limit";
 import routes from "../api";
 import { loggerMiddleware } from "../api/ middlewares";
+import config from "../config";
 
 export default async ({ app }: { app: Application }) => {
   app.enable("trust proxy");
+  app.disable("x-powered-by");
+
   app.use(helmet());
   app.use(express.json({ limit: "2000kb" }));
+  app.use(express.urlencoded({ extended: true }));
+  app.use(hpp());
   app.use(
     compression({
       filter: (req: Request, res: Response) => {
@@ -18,9 +26,31 @@ export default async ({ app }: { app: Application }) => {
     })
   );
 
+  if (config.node_env === "production") {
+    app.use(
+      cors({
+        origin: function (origin, callback: Function) {
+          if (config.whitelist_origins.indexOf(origin) !== -1) {
+            callback(null, true);
+          } else {
+            callback(new Error("Not allowed by CORS"));
+          }
+        },
+      })
+    );
+  }
+
   app.use(loggerMiddleware);
 
-  app.use("/api/v1", routes());
+  const globalLimiter = rateLimit({
+    windowMs: 15 * 60 * 100,
+    max: 50,
+    message: "Too many request attempt detected, please try again after 15 min",
+  });
+
+  app.use(globalLimiter);
+
+  app.use(config.api_prefix, routes());
 
   app.use((req: Request, res: Response, next: NextFunction) => {
     const err = new Error("Not Found");

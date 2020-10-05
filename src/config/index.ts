@@ -2,7 +2,11 @@ const dotenv = require("dotenv");
 
 dotenv.config();
 
+const { PORT, API_PREFIX, WHITELIST_ORIGINS, NODE_ENV } = process.env;
+
 export default {
-  port: process.env.PORT || 3001,
-  api_prefix: process.env.API_PREFIX,
+  node_env: NODE_ENV,
+  port: PORT || 3001,
+  api_prefix: API_PREFIX || "/api",
+  whitelist_origins: WHITELIST_ORIGINS ? WHITELIST_ORIGINS.split(",") : [],
 };
