@@ -45,6 +45,7 @@ export default async ({ app }: { app: Application }) => {
     }
     return next(err);
   });
+
   app.use((err, req: Request, res: Response, next: NextFunction) => {
     res.status(err.status || 500);
     res.json({
