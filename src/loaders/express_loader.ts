@@ -7,6 +7,7 @@ import {
   rateLimit,
   cors,
   compression,
+  mongoSanitize,
 } from "../api/ middlewares";
 import config from "../config";
 
@@ -26,6 +27,8 @@ export default async ({ app }: { app: Application }) => {
   }
   app.use(loggerMiddleware);
   app.use(rateLimit);
+
+  app.use(mongoSanitize);
 
   app.use(config.api_prefix, routes());
 
