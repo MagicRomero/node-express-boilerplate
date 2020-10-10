@@ -1,29 +1,7 @@
-import { model, Document, Model, Schema, HookNextFunction } from "mongoose";
-import * as argon2 from "argon2";
-
-enum Role {
-  ADMIN = "admin",
-  NORMAL = "normal",
-}
-
-enum NotificationChannels {
-  EMAIL = "email",
-  SMS = "sms",
-}
-
-declare interface IUserDocument extends Document {
-  firstname: string;
-  lastname?: string;
-  username: string;
-  email: string;
-  phone?: string;
-  password: string;
-  role: Role;
-  notification_channels: NotificationChannels;
-  created_at: Date;
-}
-
-export interface IUserDocumentModel extends Model<IUserDocument> {}
+import { model, Schema } from "mongoose";
+import { beforeSave } from "./hooks";
+import { IUserDocument } from "./types";
+import { buildFullname } from "./virtuals";
 
 const UserSchema: Schema = new Schema({
   firstname: {
@@ -87,19 +65,7 @@ const UserSchema: Schema = new Schema({
   },
 });
 
-UserSchema.pre("save", async function (
-  this: IUserDocument,
-  next: HookNextFunction
-) {
-  if (!this.isModified("password")) {
-    next();
-  }
-
-  this.password = await argon2.hash(this.password);
-});
-
-UserSchema.virtual("fullName").get(function (this: IUserDocument): string {
-  return `${this.firstname} ${this.lastname}`;
-});
+UserSchema.pre("save", beforeSave);
+UserSchema.virtual("fullName").get(buildFullname);
 
 export default model<IUserDocument>("User", UserSchema);
