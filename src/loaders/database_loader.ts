@@ -1,8 +1,8 @@
 import config from "../config";
-import mongoose from "mongoose";
+import { connect } from "mongoose";
 
 export default async (): Promise<any> => {
-  const connection = await mongoose.connect(config.database_url, {
+  const connection = await connect(config.database_url, {
     useNewUrlParser: true,
     useCreateIndex: true,
     useFindAndModify: false,

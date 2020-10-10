@@ -1,7 +1,31 @@
-import mongoose, { Schema } from "mongoose";
+import { model, Document, Model, Schema, HookNextFunction } from "mongoose";
 import * as argon2 from "argon2";
 
-const UserSchema = new Schema({
+enum Role {
+  ADMIN = "admin",
+  NORMAL = "normal",
+}
+
+enum NotificationChannels {
+  EMAIL = "email",
+  SMS = "sms",
+}
+
+declare interface IUserDocument extends Document {
+  firstname: string;
+  lastname?: string;
+  username: string;
+  email: string;
+  phone?: string;
+  password: string;
+  role: Role;
+  notification_channels: NotificationChannels;
+  created_at: Date;
+}
+
+export interface IUserDocumentModel extends Model<IUserDocument> {}
+
+const UserSchema: Schema = new Schema({
   firstname: {
     type: String,
     trim: true,
@@ -49,7 +73,7 @@ const UserSchema = new Schema({
     type: String,
     required: [true, "Please add a password"],
     minlength: 6,
-    maxlength: 50,
+    maxlength: 150,
     select: false,
   },
   notification_channels: {
@@ -63,8 +87,10 @@ const UserSchema = new Schema({
   },
 });
 
-// Encrypt password using bcrypt
-UserSchema.pre("save", async function (next) {
+UserSchema.pre("save", async function (
+  this: IUserDocument,
+  next: HookNextFunction
+) {
   if (!this.isModified("password")) {
     next();
   }
@@ -72,8 +98,8 @@ UserSchema.pre("save", async function (next) {
   this.password = await argon2.hash(this.password);
 });
 
-UserSchema.virtual("fullName").get(function () {
+UserSchema.virtual("fullName").get(function (this: IUserDocument): string {
   return `${this.firstname} ${this.lastname}`;
 });
 
-export default mongoose.model("User", UserSchema);
+export default model<IUserDocument>("User", UserSchema);
