@@ -1,26 +1,41 @@
 import mongoose, { Schema } from "mongoose";
-import bcrypt from "bcrypt";
+import * as argon2 from "argon2";
 
 const UserSchema = new Schema({
   firstname: {
     type: String,
-    required: [true, "Please add a name"],
+    trim: true,
+    required: [true, "The firstname is required"],
   },
   lastname: {
     type: String,
-    required: [true, "Please add a name"],
+    trim: true,
+    required: false,
+    default: "",
+  },
+  username: {
+    type: String,
+    trim: true,
+    required: [true, "The username field is required"],
+    unique: true,
+    match: [
+      /^[\w\s\d-_.]{3, 20}$/,
+      "Min length is 3 and max length is 20 characters, we only allow specials like . - _",
+    ],
   },
   email: {
     type: String,
-    required: [true, "Please add an email"],
+    trim: true,
+    required: [true, "The email field is mandatory"],
     unique: true,
     match: [
       /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
       "Please add a valid email",
     ],
   },
-  email: {
+  phone: {
     type: String,
+    trim: true,
     required: false,
     unique: true,
     match: [/^[\d-+\(\)]{6,20}$/, "Please add a valid phone number"],
@@ -34,7 +49,13 @@ const UserSchema = new Schema({
     type: String,
     required: [true, "Please add a password"],
     minlength: 6,
+    maxlength: 50,
     select: false,
+  },
+  notification_channels: {
+    type: [String],
+    enum: ["email", "sms"],
+    default: ["email"],
   },
   createdAt: {
     type: Date,
@@ -48,8 +69,11 @@ UserSchema.pre("save", async function (next) {
     next();
   }
 
-  const salt = await bcrypt.genSalt(10);
-  this.password = await bcrypt.hash(this.password, salt);
+  this.password = await argon2.hash(this.password);
+});
+
+UserSchema.virtual("fullName").get(function () {
+  return `${this.firstname} ${this.lastname}`;
 });
 
 export default mongoose.model("User", UserSchema);
