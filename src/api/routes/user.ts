@@ -1,11 +1,12 @@
 import { Router, Request, Response } from "express";
+import { attachCurrentUser, isAuth } from "../middlewares";
+
+const route = Router();
 
 export default (app: Router) => {
-  const route = Router();
-
-  app.use("/users", route);
+  app.use("/users", isAuth, attachCurrentUser, route);
 
   route.get("/me", (req: Request, res: Response) => {
-    return res.status(200).json({ me: "ESE SOY YO COLEGA" });
+    return res.status(200).json({ user: req.currentUser });
   });
 };

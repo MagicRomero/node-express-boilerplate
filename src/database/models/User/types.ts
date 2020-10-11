@@ -1,11 +1,12 @@
 import { Document, Model } from "mongoose";
 
-enum Role {
+export enum Role {
+  SUPERADMIN = "super-admin",
   ADMIN = "admin",
   NORMAL = "normal",
 }
 
-enum NotificationChannels {
+export enum NotificationChannels {
   EMAIL = "email",
   SMS = "sms",
 }
