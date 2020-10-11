@@ -19,7 +19,7 @@ export interface IUserDocument extends Document {
   password: string;
   role: Role;
   notification_channels: NotificationChannels;
-  created_at: Date;
+  createdAt: Date;
 }
 
 export interface IUserDocumentModel extends Model<IUserDocument> {}
