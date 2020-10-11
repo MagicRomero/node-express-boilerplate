@@ -23,7 +23,7 @@ export default (app: Router) => {
         .json({
           user: {
             email: userRecord.email,
-            name: userRecord.username,
+            username: userRecord.username,
           },
           jwt: AuthService.generateToken(userRecord),
         })

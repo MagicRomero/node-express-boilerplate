@@ -1,6 +1,6 @@
 import { model, Schema } from "mongoose";
 import { beforeSave } from "./hooks";
-import { IUserDocument } from "./types";
+import { IUserDocument, IUserDocumentModel } from "./types";
 import { buildFullname } from "./virtuals";
 
 const UserSchema: Schema = new Schema({
@@ -68,4 +68,4 @@ const UserSchema: Schema = new Schema({
 UserSchema.pre("save", beforeSave);
 UserSchema.virtual("fullName").get(buildFullname);
 
-export default model<IUserDocument>("User", UserSchema);
+export default model<IUserDocument, IUserDocumentModel>("User", UserSchema);

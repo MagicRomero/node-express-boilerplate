@@ -11,7 +11,7 @@ export enum NotificationChannels {
   SMS = "sms",
 }
 
-export interface IUserDocument extends Document {
+export interface User {
   firstname: string;
   lastname?: string;
   username: string;
@@ -19,8 +19,9 @@ export interface IUserDocument extends Document {
   phone?: string;
   password: string;
   role: Role;
-  notification_channels: NotificationChannels;
-  createdAt: Date;
+  notification_channels: Array<NotificationChannels>;
+  createdAt?: Date;
 }
 
+export interface IUserDocument extends User, Document {}
 export interface IUserDocumentModel extends Model<IUserDocument> {}
