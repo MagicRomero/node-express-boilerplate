@@ -1,8 +1,8 @@
 import { Request, Response, Router } from "express";
-import { attachCurrentUser, isAuth, checkRole } from "../middlewares/auth";
-import { UserModel } from "database/models";
-import { Role } from "database/models/User/types";
-import AuthService from "services/AuthService";
+import { attachCurrentUser, isAuth, checkRole } from "../middlewares";
+import { UserModel } from "../../database/models";
+import { Role } from "../../database/models/User/types";
+import AuthService from "../../services/AuthService";
 
 const route = Router();
 

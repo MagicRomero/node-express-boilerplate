@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
-import { IUserDocument, User } from "database/models/User/types";
+import { IUserDocument, User } from "../database/models/User/types";
 import config from "../config";
-import { UserModel } from "database/models";
+import { UserModel } from "../database/models";
 import * as argon2 from "argon2";
 
 class AuthService {
