@@ -1,0 +1,32 @@
+version: "3.1"
+
+services:
+  nginx:
+    image: nginx:stable-alpine
+    container_name: nginx_proxy
+    volumes:
+      - ./nginx:/etc/nginx/
+    depends_on:
+      - server
+    ports:
+      - "8080:80"
+      - "443:443"
+    restart: on-failure
+
+  server:
+    container_name: node_api
+    tty: true
+    stdin_open: true
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3030:3030"
+    restart: on-failure
+  # certbot:
+  #   image: certbot/certbot:latest
+  #   command: certonly --webroot --webroot-path=/usr/share/nginx/html/letsencrypt --email your email.com --agree-tos --no-eff-email -d yourdomain.com
+  #   volumes:
+  #     - ./certbot/conf/:/etc/letsencrypt
+  #     - ./certbot/logs/:/var/log/letsencrypt
+  #     - ./certbot/data:/usr/share/nginx/html/letsencrypt
